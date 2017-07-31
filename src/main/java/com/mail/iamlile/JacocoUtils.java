@@ -21,7 +21,7 @@ public class JacocoUtils {
      *
      * @param isNew 是否重新创建ec文件
      */
-    public static void generateEcFile(boolean isNew) {
+    public static void generateEcFile(String serverUrl,boolean isNew) {
 //        String DEFAULT_COVERAGE_FILE_PATH = NLog.getContext().getFilesDir().getPath().toString() + "/coverage.ec";
         logger.info("生成覆盖率文件: " + DEFAULT_COVERAGE_FILE_PATH);
         OutputStream out = null;
@@ -47,6 +47,8 @@ public class JacocoUtils {
             // ec文件自动上报到服务器
             //UploadServiceOkHttp uploadService = new UploadServiceOkHttp(mCoverageFilePath);
             //uploadService.start();
+            UploadServiceOkHttp uploadServiceOkHttp = new UploadServiceOkHttp();
+            uploadServiceOkHttp.runUploadFile(serverUrl,mCoverageFilePath);
         } catch (Exception e) {
             logger.info("generateEcFile: " + e.getMessage());
         } finally {
