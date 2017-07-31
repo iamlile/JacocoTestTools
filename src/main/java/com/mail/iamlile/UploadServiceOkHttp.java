@@ -67,12 +67,42 @@ public  class UploadServiceOkHttp {
         });
     }
 
+    public void runUploadFile(String serverUrl,File file) {
+        Date d = new Date(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String date_str = sdf.format(d);
+        String fileName = "kuai-android" + "-" + "2.0" + "-" + date_str + "-" + file.getName();
 
-    public static void main(String[] params){
-        new UploadServiceOkHttp().runUploadFile();
-        //new UploadServiceOkHttp().uploadFile("http://192.168.0.131:3000/upload",new File("/Users/lee/PycharmProjects/file-uploader/uploads/tmp/coverage.ec"));
+        RequestBody requestBody = new MultipartBuilder()
+                .type(MultipartBuilder.FORM)
+                .addPart(
+                        Headers.of("Content-Disposition", "form-data; name=\"uploadfile\"; filename=\"" + fileName + "\"" + LINEND),
+                        RequestBody.create(MEDIA_TYPE_FILE, file))
+                .addFormDataPart("app_version", "2.0")
+                .addFormDataPart("platform", "android")
+                .addFormDataPart("create_time", "today")
+                .build();
 
+        if ( null == serverUrl) {
+            serverUrl = UPLOAD_SERVER;
+        }
+        Request request = new Request.Builder()
+                .url(serverUrl)
+                .post(requestBody)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                //Log.i("info","success");
+            }
+
+        });
     }
-
 
 }
