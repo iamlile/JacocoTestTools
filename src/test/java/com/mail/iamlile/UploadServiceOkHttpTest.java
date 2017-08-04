@@ -9,11 +9,10 @@ import java.io.File;
  */
 
 public class UploadServiceOkHttpTest {
-
     @Test
     public void testRunUploadFile() throws Exception {
         File file = new File("/Users/lee/PycharmProjects/file-uploader/uploads/tmp/coverage.ec");
-        new UploadServiceOkHttp().runUploadFile(null,file);
+        new UploadServiceOkHttp().runUploadFile("http://192.168.0.131:3000/upload", new File("/Users/lee/PycharmProjects/file-uploader/uploads/tmp/coverage.ec"));
 
     }
 }
